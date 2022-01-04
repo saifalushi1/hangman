@@ -10,10 +10,12 @@
 </head>
 <body>
     <style>
+        body{
+            background-color: #E2DFD2;
+        }
         li{
             list-style: none;
             text-align: right;
-            background-color: transparent;
         }
         .title {
             text-align: center;
@@ -29,9 +31,13 @@
             display: flexbox;
             
         }
-        a:hover, a:link, a:visited, a:active{
-            background-color: #404040;
+        a:hover, a:link, a:visited{
+            background-color: transparent;
             text-decoration: none;
+        }
+        a:active, a:focus{
+            color: transparent;
+            background-color: transparent;
         }
         .startWrapper{
             display: flex;
@@ -60,7 +66,7 @@
         <ul class="header">
             <h2 class="title">HangMan</h2>
             <li class="dropdown-header gameOptions"><h6><a>Game Options</a></h6></li>
-            <li><a class="dropdown-item hidden" href="#">New Game</a></li>
+            <li><a class="dropdown-item hidden newGame" href="#">New Game</a></li>
             <li><a class="dropdown-item hidden theme" href="#">Dark</a></li>
         </ul>
     </div>

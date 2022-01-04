@@ -20,34 +20,39 @@ let lineHolder = document.querySelector(".lineHolder")
 let word = []
 let arrOfLetters = []
 
-for(let i = 0; i < options.length; i++){
-    let counter = 0
-    gameOptions.addEventListener("click", ()=>{
-        counter++
-        if(counter % 2 != 0){
-            options[i].classList.remove("hidden")
-            let x = document.createElement("li")
-            //COMEBACK LATER CREATE OPTIONS ON CLICK
-            // x.appendChild("")
-        }
-        else{
-            options[i].classList.add("hidden")
-        }
+//shows menu options (new game, theme) on click
+function menuCreation(){
+    for(let i = 0; i < options.length; i++){
+        let counter = 0
+        gameOptions.addEventListener("click", ()=>{
+            counter++
+            if(counter % 2 != 0){
+                options[i].classList.remove("hidden")
+                let x = document.createElement("li")
+                //COMEBACK LATER CREATE OPTIONS ON CLICK
+                // x.appendChild("")
+            }
+            else{
+                // options[i].remove()
+                options[i].classList.add("hidden")
+            }
+        })
+    }
+    theme.addEventListener("click", ()=>{
+        themeCounter++
+            if(themeCounter % 2 === 0 ){
+                body.style.backgroundColor = "#E2DFD2"
+                
+            }
+            else{
+                body.style.backgroundColor = "#404040"
+    
+            }
     })
 }
 
-theme.addEventListener("click", ()=>{
-    themeCounter++
-        if(themeCounter % 2 === 0 ){
-            body.style.backgroundColor = "#E2DFD2"
-            
-        }
-        else{
-            body.style.backgroundColor = "#404040"
-
-        }
-})
-
+/*Takes word from paramater and splits it into letters and pushes each letter into an array.
+Then created a list item with the inner html = array[i]*/
 function gameLogic(theword){
     let letteredWord = theword.split("")
     console.log(letteredWord)
@@ -56,25 +61,24 @@ function gameLogic(theword){
         let li = document.createElement("li")
         lineHolder.appendChild(li)
         li.innerHTML = letteredWord[i]
-        li.value = 
+        li.value = letteredWord[i] 
         li.classList.add("line")
 
         
     }
-    //Event listener that does something if the key pressed is in the word
-    document.addEventListener('keydown', e => {
-        let key = e.key || String.fromCharCode(e.keyCode);
-        for(let i = 0; i < arrOfLetters.length; i++)
-        if (arrOfLetters[i] === key) {
-            // Do something with `,` key
-            console.log("yo")
-            e.preventDefault()
-        }
-        // else if(key != arrOfLetters[i]){
-        //     console.log("yer")
-        // }
-    }, false);
 }
+/*Event listener that does something if the key pressed matches a letter in the word*/
+document.addEventListener('keydown', e => {
+    let key = e.key 
+    for(let i = 0; i < arrOfLetters.length; i++)
+    if (arrOfLetters[i] === key) {
+        console.log("yo")
+        e.preventDefault()
+    }
+    // else if(key != arrOfLetters[i]){
+    //     console.log("yer")
+    // }
+}, false);
 
 function createGame(){
     startGame.addEventListener("click", () => {
@@ -106,3 +110,4 @@ function createGame(){
 
 
 createGame()
+menuCreation()
