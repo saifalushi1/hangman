@@ -15,6 +15,10 @@ let options = document.querySelectorAll(".hidden")
 let theme = document.querySelector(".theme")
 let body = document.body
 let startGame = document.querySelector(".startGame")
+let animationWrapper = document.querySelector(".animationWrapper")
+let lineHolder = document.querySelector(".lineHolder")
+let word = []
+let arrOfLetters = []
 
 for(let i = 0; i < options.length; i++){
     let counter = 0
@@ -44,11 +48,43 @@ theme.addEventListener("click", ()=>{
         }
 })
 
+function gameLogic(theword){
+    let letteredWord = theword.split("")
+    console.log(letteredWord)
+    for(let i = 0; i < letteredWord.length; i++){
+        arrOfLetters.push(letteredWord[i])
+        let li = document.createElement("li")
+        lineHolder.appendChild(li)
+        li.innerHTML = letteredWord[i]
+        li.value = 
+        li.classList.add("line")
+
+        
+    }
+    //Event listener that does something if the key pressed is in the word
+    document.addEventListener('keydown', e => {
+        let key = e.key || String.fromCharCode(e.keyCode);
+        for(let i = 0; i < arrOfLetters.length; i++)
+        if (arrOfLetters[i] === key) {
+            // Do something with `,` key
+            console.log("yo")
+            e.preventDefault()
+        }
+        // else if(key != arrOfLetters[i]){
+        //     console.log("yer")
+        // }
+    }, false);
+}
+
 function createGame(){
     startGame.addEventListener("click", () => {
         startGame.remove()
+        //create a new element to display the animation 
+        let animationStart = document.createElement("img")
+        animationWrapper.appendChild(animationStart)
+        animationStart.src = "https://cdn.dribbble.com/users/3368906/screenshots/6218050/e-9-2-dead_walk.gif"
 
-        fetch('https://random-word-api.herokuapp.com/word?number=10&swear=0')
+        fetch('https://random-word-api.herokuapp.com/word?number=1&swear=0')
 
         .then(res => {
             console.log(res)
@@ -57,6 +93,12 @@ function createGame(){
         })
         .then(result =>{
             console.log(result)
+            word.push(result[0])
+            let newWord = word[0].split("")
+            console.log(newWord)
+            gameLogic(result[0])
+
+        
         })
     })
 
