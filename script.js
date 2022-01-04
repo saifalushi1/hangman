@@ -13,6 +13,7 @@ let themeCounter = 0
 let gameOptions = document.querySelector(".gameOptions")
 let options = document.querySelectorAll(".hidden")
 let theme = document.querySelector(".theme")
+let newGame = document.querySelector(".newGame")
 let body = document.body
 let startGame = document.querySelector(".startGame")
 let animationWrapper = document.querySelector(".animationWrapper")
@@ -38,6 +39,7 @@ function menuCreation(){
             }
         })
     }
+
     theme.addEventListener("click", ()=>{
         themeCounter++
             if(themeCounter % 2 === 0 ){
@@ -51,6 +53,7 @@ function menuCreation(){
     })
 }
 
+
 /*Takes word from paramater and splits it into letters and pushes each letter into an array.
 Then created a list item with the inner html = array[i]*/
 function gameLogic(theword){
@@ -61,30 +64,31 @@ function gameLogic(theword){
         let li = document.createElement("li")
         lineHolder.appendChild(li)
         li.innerHTML = letteredWord[i]
-        li.value = letteredWord[i] 
+        li.setAttribute("id", letteredWord[i])
         li.classList.add("line")
 
         
     }
+    //try .reduce() or filter() to return false and remove a letter and causedamage
+    /*Event listener that does something if the key pressed matches a letter in the word*/
+    document.addEventListener('keydown', e => {
+        let key = e.key 
+        for(let i = 0; i < arrOfLetters.length; i++){
+            if (arrOfLetters[i] === key) {
+                console.log("yo")
+                e.preventDefault()
+            }
+        }
+    }, false);
 }
-/*Event listener that does something if the key pressed matches a letter in the word*/
-document.addEventListener('keydown', e => {
-    let key = e.key 
-    for(let i = 0; i < arrOfLetters.length; i++)
-    if (arrOfLetters[i] === key) {
-        console.log("yo")
-        e.preventDefault()
-    }
-    // else if(key != arrOfLetters[i]){
-    //     console.log("yer")
-    // }
-}, false);
+
 
 function createGame(){
     startGame.addEventListener("click", () => {
         startGame.remove()
         //create a new element to display the animation 
         let animationStart = document.createElement("img")
+        animationStart.classList.add("animation")
         animationWrapper.appendChild(animationStart)
         animationStart.src = "https://cdn.dribbble.com/users/3368906/screenshots/6218050/e-9-2-dead_walk.gif"
 
@@ -102,12 +106,44 @@ function createGame(){
             console.log(newWord)
             gameLogic(result[0])
 
-        
+            
+            
         })
     })
-
+    
 }
 
 
 createGame()
 menuCreation()
+newGame.addEventListener("click", ()=> {
+    let removedImg = document.querySelector(".animation")
+    removedImg.remove()
+    let removedLines = document.querySelectorAll(".line")
+    console.log(removedLines)
+    removedLines.forEach((item) =>{
+        item.remove()
+    })
+    let animationStart = document.createElement("img")
+        animationStart.classList.add("animation")
+        animationWrapper.appendChild(animationStart)
+        animationStart.src = "https://cdn.dribbble.com/users/3368906/screenshots/6218050/e-9-2-dead_walk.gif"
+
+        fetch('https://random-word-api.herokuapp.com/word?number=1&swear=0')
+
+        .then(res => {
+            console.log(res)
+        
+            return res.json()
+        })
+        .then(result =>{
+            console.log(result)
+            word.push(result[0])
+            let newWord = word[0].split("")
+            console.log(newWord)
+            gameLogic(result[0])
+
+            
+            
+        })
+})
