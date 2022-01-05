@@ -39,17 +39,17 @@ function menuCreation(){
             }
         })
     }
-
+    
     theme.addEventListener("click", ()=>{
         themeCounter++
-            if(themeCounter % 2 === 0 ){
-                body.style.backgroundColor = "#E2DFD2"
-                
-            }
-            else{
-                body.style.backgroundColor = "#404040"
-    
-            }
+        if(themeCounter % 2 === 0 ){
+            body.style.backgroundColor = "#E2DFD2"
+            
+        }
+        else{
+            body.style.backgroundColor = "#404040"
+            
+        }
     })
 }
 
@@ -68,16 +68,19 @@ function gameLogic(theword){
         li.setAttribute("id", letteredWord[i])
         li.classList.add(letteredWord[i])
         li.classList.add("line")
-
+        
         
     }
     //try .reduce() or filter() to return false and remove a letter and causedamage
     //TODO: find a way to cause an event if the key pressed does not match the letters in the word
+    //REFACTOR: MAYBE
     /*Event listener that does something if the key pressed matches a letter in the word*/
     document.addEventListener('keydown', e => {
         let key = e.key 
+        let damage = 0
         for(let i = 0; i < arrOfLetters.length; i++){
             if (arrOfLetters[i] === key) {
+                damage++
                 let lineElement = document.querySelector(`#${arrOfLetters[i]}`)
                 let multipleLineElement = document.querySelectorAll(`.${arrOfLetters[i]}`)
                 // console.log(lineElement)
@@ -92,9 +95,12 @@ function gameLogic(theword){
                 e.preventDefault()
             }
             // else if(key != arrOfLetters[i]){
-            //     console.log("no")
+            //     damage+=1
             //     break
             // }
+        }
+        if(damage === 0){
+            console.log("no")
         }
     }, false);
 }
