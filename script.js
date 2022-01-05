@@ -66,25 +66,48 @@ function gameLogic(theword){
         // li.innerHTML = letteredWord[i]
         li.innerHTML = "__"
         li.setAttribute("id", letteredWord[i])
+        li.classList.add(letteredWord[i])
         li.classList.add("line")
 
         
     }
     //try .reduce() or filter() to return false and remove a letter and causedamage
+    //TODO: find a way to cause an event if the key pressed does not match the letters in the word
     /*Event listener that does something if the key pressed matches a letter in the word*/
     document.addEventListener('keydown', e => {
         let key = e.key 
         for(let i = 0; i < arrOfLetters.length; i++){
             if (arrOfLetters[i] === key) {
                 let lineElement = document.querySelector(`#${arrOfLetters[i]}`)
+                let multipleLineElement = document.querySelectorAll(`.${arrOfLetters[i]}`)
+                // console.log(lineElement)
+                // console.log(lineElement.length)
                 lineElement.innerHTML = arrOfLetters[i]
-                console.log("yo")
+                    if(multipleLineElement.length > 1){
+                        for(let j = 0; j < multipleLineElement.length; j++){
+                            multipleLineElement[j].innerHTML = arrOfLetters[i]
+                        }
+                    }
+                // console.log("yo")
                 e.preventDefault()
             }
+            // else if(key != arrOfLetters[i]){
+            //     console.log("no")
+            //     break
+            // }
         }
     }, false);
 }
 
+// document.addEventListener("keydown", e => {
+//     let notKey = e.key
+//     for(let i = 0; i < arrOfLetters.length; i++){
+//         if(notKey != arrOfLetters[i]){
+//             console.log("no")
+//             break
+//         }
+//     }
+// })
 
 function createGame(){
     startGame.addEventListener("click", () => {
