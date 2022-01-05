@@ -63,7 +63,8 @@ function gameLogic(theword){
         arrOfLetters.push(letteredWord[i])
         let li = document.createElement("li")
         lineHolder.appendChild(li)
-        li.innerHTML = letteredWord[i]
+        // li.innerHTML = letteredWord[i]
+        li.innerHTML = "__"
         li.setAttribute("id", letteredWord[i])
         li.classList.add("line")
 
@@ -75,6 +76,8 @@ function gameLogic(theword){
         let key = e.key 
         for(let i = 0; i < arrOfLetters.length; i++){
             if (arrOfLetters[i] === key) {
+                let lineElement = document.querySelector(`#${arrOfLetters[i]}`)
+                lineElement.innerHTML = arrOfLetters[i]
                 console.log("yo")
                 e.preventDefault()
             }
