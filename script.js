@@ -56,7 +56,7 @@ function menuCreation(){
 }
 
 function changeAnimation(){
-    for(let i = 0 ; i < 7; i++){
+    for(let i = 0 ; i < 3; i++){
         let img = document.createElement("img")
         img.classList.add("life", `heart${i}`)
         lifeWrapper.appendChild(img)
@@ -104,7 +104,10 @@ function gameLogic(theword){
             
         }
         if(correct === 0){
-            console.log("no")
+            let life = document.querySelector(`.heart${incorrectGuesses}`)
+            console.log(life)
+            life.src = "https://cdn.staticcrate.com/stock-hd/effects/footagecrate-Broken_Heart_Icon_Sweet_Pixel@3X.png"
+            incorrectGuesses++
         }
     }, false);
 }
@@ -144,6 +147,7 @@ function createGame(){
 
 createGame()
 menuCreation()
+
 newGame.addEventListener("click", ()=> {
     let removedImg = document.querySelector(".animation")
     removedImg.remove()
