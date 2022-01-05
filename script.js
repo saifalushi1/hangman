@@ -16,10 +16,12 @@ let theme = document.querySelector(".theme")
 let newGame = document.querySelector(".newGame")
 let body = document.body
 let startGame = document.querySelector(".startGame")
+let lifeWrapper = document.querySelector(".lifeWrapper")
 let animationWrapper = document.querySelector(".animationWrapper")
 let lineHolder = document.querySelector(".lineHolder")
 let word = []
 let arrOfLetters = []
+let incorrectGuesses = 0
 
 //shows menu options (new game, theme) on click
 function menuCreation(){
@@ -53,6 +55,14 @@ function menuCreation(){
     })
 }
 
+function changeAnimation(){
+    for(let i = 0 ; i < 7; i++){
+        let img = document.createElement("img")
+        img.classList.add("life", `heart${i}`)
+        lifeWrapper.appendChild(img)
+        img.src = "https://pbs.twimg.com/profile_images/554699922138624000/0AopZpk4_400x400.png"
+    }
+}
 
 /*Takes word from paramater and splits it into letters and pushes each letter into an array.
 Then created a list item with the inner html = array[i]*/
@@ -77,47 +87,33 @@ function gameLogic(theword){
     /*Event listener that does something if the key pressed matches a letter in the word*/
     document.addEventListener('keydown', e => {
         let key = e.key 
-        let damage = 0
+        let correct = 0
         for(let i = 0; i < arrOfLetters.length; i++){
             if (arrOfLetters[i] === key) {
-                damage++
+                correct++
                 let lineElement = document.querySelector(`#${arrOfLetters[i]}`)
                 let multipleLineElement = document.querySelectorAll(`.${arrOfLetters[i]}`)
-                // console.log(lineElement)
-                // console.log(lineElement.length)
                 lineElement.innerHTML = arrOfLetters[i]
                     if(multipleLineElement.length > 1){
                         for(let j = 0; j < multipleLineElement.length; j++){
                             multipleLineElement[j].innerHTML = arrOfLetters[i]
                         }
                     }
-                // console.log("yo")
                 e.preventDefault()
             }
-            // else if(key != arrOfLetters[i]){
-            //     damage+=1
-            //     break
-            // }
+            
         }
-        if(damage === 0){
+        if(correct === 0){
             console.log("no")
         }
     }, false);
 }
 
-// document.addEventListener("keydown", e => {
-//     let notKey = e.key
-//     for(let i = 0; i < arrOfLetters.length; i++){
-//         if(notKey != arrOfLetters[i]){
-//             console.log("no")
-//             break
-//         }
-//     }
-// })
 
 function createGame(){
     startGame.addEventListener("click", () => {
         startGame.remove()
+        changeAnimation()
         //create a new element to display the animation 
         let animationStart = document.createElement("img")
         animationStart.classList.add("animation")
