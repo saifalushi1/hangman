@@ -103,11 +103,16 @@ function gameLogic(theword){
             }
             
         }
-        if(correct === 0){
+        if(correct === 0 && incorrectGuesses < 3){
             let life = document.querySelector(`.heart${incorrectGuesses}`)
-            console.log(life)
+            let animation = document.querySelector(".animation")
+            animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6223135/e-9-2-dead_damage.gif"
             life.src = "https://cdn.staticcrate.com/stock-hd/effects/footagecrate-Broken_Heart_Icon_Sweet_Pixel@3X.png"
             incorrectGuesses++
+            setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6218050/e-9-2-dead_walk.gif"}, 500);
+                if(incorrectGuesses >= 3){
+                    setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6223136/e-9-2-dead_dead.gif"}, 500);
+                }  
         }
     }, false);
 }
@@ -147,15 +152,20 @@ function createGame(){
 
 createGame()
 menuCreation()
-
+//FIX NEWGAME LOGIC
 newGame.addEventListener("click", ()=> {
     let removedImg = document.querySelector(".animation")
     removedImg.remove()
     let removedLines = document.querySelectorAll(".line")
+    let removedHearts = document.querySelectorAll(".life")
     console.log(removedLines)
     removedLines.forEach((item) =>{
         item.remove()
     })
+    removedHearts.forEach((item) => {
+        item.remove()
+    })
+    changeAnimation()
     let animationStart = document.createElement("img")
         animationStart.classList.add("animation")
         animationWrapper.appendChild(animationStart)
