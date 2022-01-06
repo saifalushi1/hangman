@@ -19,6 +19,7 @@ let startGame = document.querySelector(".startGame")
 let lifeWrapper = document.querySelector(".lifeWrapper")
 let animationWrapper = document.querySelector(".animationWrapper")
 let lineHolder = document.querySelector(".lineHolder")
+let lineWrapper = document.querySelector(".lineWrapper")
 let word = []
 let arrOfLetters = []
 let incorrectGuesses = 0
@@ -83,7 +84,7 @@ function gameLogic(theword){
     }
     //try .reduce() or filter() to return false and remove a letter and causedamage
     //TODO: find a way to cause an event if the key pressed does not match the letters in the word
-    //REFACTOR: MAYBE
+    //REFACTOR LATER
     /*Event listener that does something if the key pressed matches a letter in the word*/
     document.addEventListener('keydown', e => {
         let key = e.key 
@@ -94,6 +95,7 @@ function gameLogic(theword){
                 let lineElement = document.querySelector(`#${arrOfLetters[i]}`)
                 let multipleLineElement = document.querySelectorAll(`.${arrOfLetters[i]}`)
                 lineElement.innerHTML = arrOfLetters[i]
+                console.log(correct)
                     if(multipleLineElement.length > 1){
                         for(let j = 0; j < multipleLineElement.length; j++){
                             multipleLineElement[j].innerHTML = arrOfLetters[i]
@@ -108,10 +110,12 @@ function gameLogic(theword){
             let animation = document.querySelector(".animation")
             animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6223135/e-9-2-dead_damage.gif"
             life.src = "https://cdn.staticcrate.com/stock-hd/effects/footagecrate-Broken_Heart_Icon_Sweet_Pixel@3X.png"
+            console.log(life)
             incorrectGuesses++
             setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6218050/e-9-2-dead_walk.gif"}, 500);
                 if(incorrectGuesses >= 3){
                     setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6223136/e-9-2-dead_dead.gif"}, 500);
+                    lineHolder.remove()
                 }  
         }
     }, false);
@@ -140,6 +144,7 @@ function createGame(){
             word.push(result[0])
             let newWord = word[0].split("")
             console.log(newWord)
+            console.log(arrOfLetters)
             gameLogic(result[0])
 
             
@@ -154,6 +159,7 @@ createGame()
 menuCreation()
 //FIX NEWGAME LOGIC
 newGame.addEventListener("click", ()=> {
+    incorrectGuesses = 0
     let removedImg = document.querySelector(".animation")
     removedImg.remove()
     let removedLines = document.querySelectorAll(".line")
@@ -183,6 +189,7 @@ newGame.addEventListener("click", ()=> {
             word.push(result[0])
             let newWord = word[0].split("")
             console.log(newWord)
+            console.log(arrOfLetters)
             gameLogic(result[0])
 
             
