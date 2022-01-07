@@ -89,9 +89,11 @@ function gameLogic(theword){
     //REFACTOR LATER
     /*Event listener that does something if the key pressed matches a letter in the word*/
     // if correct answer is made push guessed letters to an array and respond by saying you have chosen this letter chose again.
+    let correct = 0
     document.addEventListener('keyup', e => {
         let key = e.key 
-        let correct = 0
+        guessedLetters.push(key)
+        console.log(guessedLetters)
         for(let i = 0; i < arrOfLetters.length; i++){
             // console.log(arrOfLetters)
             if (arrOfLetters[i] === key) {
@@ -101,7 +103,6 @@ function gameLogic(theword){
                 let lineElement = document.querySelector(`#${arrOfLetters[i]}`)
                 let multipleLineElement = document.querySelectorAll(`.${arrOfLetters[i]}`)
                 lineElement.innerHTML = arrOfLetters[i]
-                guessedLetters.push(key)
                 // console.log(correct)
                     if(multipleLineElement.length > 1){
                         for(let j = 0; j < multipleLineElement.length; j++){
@@ -112,16 +113,7 @@ function gameLogic(theword){
             }
             
         }
-            //Fix This
-        // for(let i = 0; i < guessedLetters.length; i++){
-        //     if (guessedLetters[i] === key){
-        //         let tryAgain = document.createElement("h4")
-        //         tryAgain.innerHTML = "You have guessed this letter please try a different letter"
-        //         animationWrapper.appendChild(tryAgain)
-        //         setTimeout(() => {tryAgain.remove()}, 3000)
-        //     }
-        // }
-
+        
         if(correct === 0 && incorrectGuesses < 3){
             let life = document.querySelector(`.heart${incorrectGuesses}`)
             let animation = document.querySelector(".animation")
@@ -130,15 +122,15 @@ function gameLogic(theword){
             console.log(life)
             incorrectGuesses++
             setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6218050/e-9-2-dead_walk.gif"}, 500);
-                if(incorrectGuesses >= 3){
-                    setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6223136/e-9-2-dead_dead.gif"}, 500);
-                    lineHolder.remove()
-                    let deathScreen = document.createElement("h2")
-                    lineWrapper.appendChild(deathScreen)
-                    deathScreen.innerHTML = "GAME OVER"
-                }  
+            if(incorrectGuesses >= 3){
+                setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6223136/e-9-2-dead_dead.gif"}, 500);
+                lineHolder.remove()
+                let deathScreen = document.createElement("h2")
+                lineWrapper.appendChild(deathScreen)
+                deathScreen.innerHTML = "GAME OVER"
+            }  
         }
-
+        
         else if(gameWinningCounter === arrOfLetters.length){
             document.querySelector(".animation").src = "https://c.tenor.com/Y6CdzQSlXyMAAAAi/skeleton-necrodancer.gif"
             document.querySelector(".animation").style.width = "150px"
@@ -149,11 +141,23 @@ function gameLogic(theword){
             winningScreen.innerHTML = "YOU WIN"
             conga.play()
         }
-
+        
     }, false);
 }
 
 
+document.addEventListener('keyup', e => {
+    let key = e.key 
+for(let i = 0; i < guessedLetters.length; i++){
+    if (guessedLetters[i] === key){
+        console.log(guessedLetters)
+        let tryAgain = document.createElement("h4")
+        tryAgain.innerHTML = "You have guessed this letter please try a different letter"
+        animationWrapper.appendChild(tryAgain)
+        setTimeout(() => {tryAgain.remove()}, 3000)
+        }
+    }
+})
 
 function createGame(){
     startGame.addEventListener("click", function backend(){
