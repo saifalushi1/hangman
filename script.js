@@ -58,7 +58,7 @@ function menuCreation(){
         }
     })
 }
-
+// Adds heart imgs
 function changeAnimation(){
     for(let i = 0 ; i < 3; i++){
         let img = document.createElement("img")
@@ -86,34 +86,39 @@ function gameLogic(theword){
         
     }
     //TODO: CREATE LOSE AND WIN GAME SCREENS
+    //TODO: !!!CREATE A NEW ARRAY THAT IS THE SAME AS ARROFLETTERS AND HAVE THE FUNCTION SPLICE LETTERS FROM THE NEW ARRAY
+    //      INSTEAD OF THE ORIGINAL THAT WAY THE PROGRAM CAN STILL DRAW THE LETTERS ON THE SCREEN AND NOT ALLOW THE PLAYER TO PRESS THE
+    //      SAME KEY MULTIPLE TIMES!!!
     //REFACTOR LATER
     /*Event listener that does something if the key pressed matches a letter in the word*/
     // if correct answer is made push guessed letters to an array and respond by saying you have chosen this letter chose again.
     let correct = 0
     document.addEventListener('keyup', e => {
-        let key = e.key 
-        guessedLetters.push(key)
-        console.log(guessedLetters)
+        let key = e.key
+        // let gameWinningNumber = arrOfLetters.length 
         for(let i = 0; i < arrOfLetters.length; i++){
-            // console.log(arrOfLetters)
             if (arrOfLetters[i] === key) {
+                guessedLetters.push(arrOfLetters[i])
                 correct++
                 gameWinningCounter+=1
-                console.log(gameWinningCounter)
                 let lineElement = document.querySelector(`#${arrOfLetters[i]}`)
                 let multipleLineElement = document.querySelectorAll(`.${arrOfLetters[i]}`)
                 lineElement.innerHTML = arrOfLetters[i]
-                // console.log(correct)
-                    if(multipleLineElement.length > 1){
-                        for(let j = 0; j < multipleLineElement.length; j++){
-                            multipleLineElement[j].innerHTML = arrOfLetters[i]
-                        }
+                // console.log(gameWinningCounter)
+                if(multipleLineElement.length > 1){
+                    for(let j = 0; j < multipleLineElement.length; j++){
+                        multipleLineElement[j].innerHTML = arrOfLetters[i]
+                        // arrOfLetters.splice(j, 1)
+                        console.log(arrOfLetters)
                     }
+                }
+                // arrOfLetters.splice(i, 1)
+                console.log(arrOfLetters)
                 e.preventDefault()
             }
             
         }
-        
+        //incorrect guess logic that shows damage animation and changes a 1 heart to broken
         if(correct === 0 && incorrectGuesses < 3){
             let life = document.querySelector(`.heart${incorrectGuesses}`)
             let animation = document.querySelector(".animation")
@@ -122,6 +127,7 @@ function gameLogic(theword){
             console.log(life)
             incorrectGuesses++
             setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6218050/e-9-2-dead_walk.gif"}, 500);
+            //Game over Logic. Triggers if 3 incorrect guesses are made.
             if(incorrectGuesses >= 3){
                 setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6223136/e-9-2-dead_dead.gif"}, 500);
                 lineHolder.remove()
@@ -141,23 +147,29 @@ function gameLogic(theword){
             winningScreen.innerHTML = "YOU WIN"
             conga.play()
         }
-        
+        // repeatedGuess()   
     }, false);
 }
 
-
-document.addEventListener('keyup', e => {
-    let key = e.key 
-for(let i = 0; i < guessedLetters.length; i++){
-    if (guessedLetters[i] === key){
-        console.log(guessedLetters)
-        let tryAgain = document.createElement("h4")
-        tryAgain.innerHTML = "You have guessed this letter please try a different letter"
-        animationWrapper.appendChild(tryAgain)
-        setTimeout(() => {tryAgain.remove()}, 3000)
-        }
-    }
-})
+// function repeatedGuess (){
+//     document.addEventListener('keyup', e => {
+//         let key = e.key 
+//         for(let i = 0; i < guessedLetters.length; i++){
+//             // for(let j = 0; j < arrOfLetters.length; j++){
+//                 if (guessedLetters[i] === arrOfLetters[i]){
+//                     if(guessedLetters[i] = guessedLetters[i+1]){
+//                         guessedLetters.splice(i, 2)
+//                     }
+//                     console.log(guessedLetters)
+//                     let tryAgain = document.createElement("h4")
+//                     tryAgain.innerHTML = "You have guessed this letter please try a different letter"
+//                     animationWrapper.appendChild(tryAgain)
+//                     setTimeout(() => {tryAgain.remove()}, 3000)
+//                 }
+//             // }
+//         }
+//     })
+// }
 
 function createGame(){
     startGame.addEventListener("click", function backend(){
