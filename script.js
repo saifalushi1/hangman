@@ -23,7 +23,7 @@ let lineWrapper = document.querySelector(".lineWrapper")
 let conga = document.querySelector(".conga")
 let word = []
 let arrOfLetters = []
-let guessedLetters = []
+let guessedLetters = {}
 let incorrectGuesses = 0
 let gameWinningCounter = 0
 
@@ -36,11 +36,8 @@ function menuCreation(){
             if(counter % 2 != 0){
                 options[i].classList.remove("hidden")
                 let x = document.createElement("li")
-                //COMEBACK LATER CREATE OPTIONS ON CLICK
-                // x.appendChild("")
             }
             else{
-                // options[i].remove()
                 options[i].classList.add("hidden")
             }
         })
@@ -77,7 +74,6 @@ function gameLogic(theword){
         arrOfLetters.push(letteredWord[i])
         let li = document.createElement("li")
         lineHolder.appendChild(li)
-        // li.innerHTML = letteredWord[i]
         li.innerHTML = "__"
         li.setAttribute("id", letteredWord[i])
         li.classList.add(letteredWord[i])
@@ -85,49 +81,40 @@ function gameLogic(theword){
         
         
     }
-    //TODO: CREATE LOSE AND WIN GAME SCREENS
-    //TODO: !!!CREATE A NEW ARRAY THAT IS THE SAME AS ARROFLETTERS AND HAVE THE FUNCTION SPLICE LETTERS FROM THE NEW ARRAY
-    //      INSTEAD OF THE ORIGINAL THAT WAY THE PROGRAM CAN STILL DRAW THE LETTERS ON THE SCREEN AND NOT ALLOW THE PLAYER TO PRESS THE
-    //      SAME KEY MULTIPLE TIMES!!!
+    
     //REFACTOR LATER
     /*Event listener that does something if the key pressed matches a letter in the word*/
     // if correct answer is made push guessed letters to an array and respond by saying you have chosen this letter chose again.
+   document.addEventListener('keyup', e => {
+    let key = e.key 
     let correct = 0
-    document.addEventListener('keyup', e => {
-        let key = e.key
-        // let gameWinningNumber = arrOfLetters.length 
-        for(let i = 0; i < arrOfLetters.length; i++){
-            if (arrOfLetters[i] === key) {
-                guessedLetters.push(arrOfLetters[i])
-                correct++
-                gameWinningCounter+=1
-                let lineElement = document.querySelector(`#${arrOfLetters[i]}`)
-                let multipleLineElement = document.querySelectorAll(`.${arrOfLetters[i]}`)
-                lineElement.innerHTML = arrOfLetters[i]
-                // console.log(gameWinningCounter)
-                if(multipleLineElement.length > 1){
-                    for(let j = 0; j < multipleLineElement.length; j++){
-                        multipleLineElement[j].innerHTML = arrOfLetters[i]
-                        // arrOfLetters.splice(j, 1)
-                        console.log(arrOfLetters)
-                    }
+    for(let i = 0; i < arrOfLetters.length; i++){
+        if (arrOfLetters[i] === key) {
+            correct++
+            gameWinningCounter+=1
+            console.log(gameWinningCounter)
+            // console.log(guessedLetters)
+            let lineElement = document.querySelector(`#${arrOfLetters[i]}`)
+            let multipleLineElement = document.querySelectorAll(`.${arrOfLetters[i]}`)
+            lineElement.innerHTML = arrOfLetters[i]
+            if(multipleLineElement.length > 1){
+                for(let j = 0; j < multipleLineElement.length; j++){
+                    multipleLineElement[j].innerHTML = arrOfLetters[i]
                 }
-                // arrOfLetters.splice(i, 1)
-                console.log(arrOfLetters)
-                e.preventDefault()
             }
-            
+            guessedLetters[arrOfLetters[i]] += 1
+            e.preventDefault()
         }
-        //incorrect guess logic that shows damage animation and changes a 1 heart to broken
-        if(correct === 0 && incorrectGuesses < 3){
-            let life = document.querySelector(`.heart${incorrectGuesses}`)
-            let animation = document.querySelector(".animation")
-            animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6223135/e-9-2-dead_damage.gif"
-            life.src = "https://cdn.staticcrate.com/stock-hd/effects/footagecrate-Broken_Heart_Icon_Sweet_Pixel@3X.png"
-            console.log(life)
-            incorrectGuesses++
-            setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6218050/e-9-2-dead_walk.gif"}, 500);
-            //Game over Logic. Triggers if 3 incorrect guesses are made.
+    }
+
+    if(correct === 0 && incorrectGuesses < 3){
+        let life = document.querySelector(`.heart${incorrectGuesses}`)
+        let animation = document.querySelector(".animation")
+        animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6223135/e-9-2-dead_damage.gif"
+        life.src = "https://cdn.staticcrate.com/stock-hd/effects/footagecrate-Broken_Heart_Icon_Sweet_Pixel@3X.png"
+        console.log(life)
+        incorrectGuesses++
+        setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6218050/e-9-2-dead_walk.gif"}, 500);
             if(incorrectGuesses >= 3){
                 setTimeout(() => {animation.src = "https://cdn.dribbble.com/users/3368906/screenshots/6223136/e-9-2-dead_dead.gif"}, 500);
                 lineHolder.remove()
@@ -135,41 +122,21 @@ function gameLogic(theword){
                 lineWrapper.appendChild(deathScreen)
                 deathScreen.innerHTML = "GAME OVER"
             }  
-        }
-        
-        else if(gameWinningCounter === arrOfLetters.length){
-            document.querySelector(".animation").src = "https://c.tenor.com/Y6CdzQSlXyMAAAAi/skeleton-necrodancer.gif"
-            document.querySelector(".animation").style.width = "150px"
-            document.querySelector(".animation").style.height = "100px"
-            lineHolder.remove()
-            let winningScreen = document.createElement("h2")
-            lineWrapper.appendChild(winningScreen)
-            winningScreen.innerHTML = "YOU WIN"
-            conga.play()
-        }
-        // repeatedGuess()   
-    }, false);
-}
+    }
 
-// function repeatedGuess (){
-//     document.addEventListener('keyup', e => {
-//         let key = e.key 
-//         for(let i = 0; i < guessedLetters.length; i++){
-//             // for(let j = 0; j < arrOfLetters.length; j++){
-//                 if (guessedLetters[i] === arrOfLetters[i]){
-//                     if(guessedLetters[i] = guessedLetters[i+1]){
-//                         guessedLetters.splice(i, 2)
-//                     }
-//                     console.log(guessedLetters)
-//                     let tryAgain = document.createElement("h4")
-//                     tryAgain.innerHTML = "You have guessed this letter please try a different letter"
-//                     animationWrapper.appendChild(tryAgain)
-//                     setTimeout(() => {tryAgain.remove()}, 3000)
-//                 }
-//             // }
-//         }
-//     })
-// }
+    else if(gameWinningCounter === arrOfLetters.length){
+        document.querySelector(".animation").src = "https://c.tenor.com/Y6CdzQSlXyMAAAAi/skeleton-necrodancer.gif"
+        document.querySelector(".animation").style.width = "150px"
+        document.querySelector(".animation").style.height = "100px"
+        lineHolder.remove()
+        let winningScreen = document.createElement("h2")
+        lineWrapper.appendChild(winningScreen)
+        winningScreen.innerHTML = "YOU WIN"
+        conga.play()
+    }
+
+}, false);
+}
 
 function createGame(){
     startGame.addEventListener("click", function backend(){
@@ -205,23 +172,6 @@ function createGame(){
 
 createGame()
 menuCreation()
-
-// newGame.addEventListener("click", ()=> {
-//     incorrectGuesses = 0
-//     let removedImg = document.querySelector(".animation")
-//     removedImg.remove()
-//     let removedLines = document.querySelectorAll(".line")
-//     let removedHearts = document.querySelectorAll(".life")
-//     console.log(removedLines)
-//     removedLines.forEach((item) =>{
-//         item.remove()
-//     })
-//     removedHearts.forEach((item) => {
-//         item.remove()
-//     })
-//     createGame()
-// })
-
 newGame.addEventListener("click", () =>{ 
 window.location.reload()
 })
